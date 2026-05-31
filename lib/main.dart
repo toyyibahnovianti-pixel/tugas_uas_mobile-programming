@@ -398,32 +398,32 @@ class HomeScreen extends StatelessWidget {
             // Vocabulary List
             _buildWordCard(
               word: 'Negotiate',
-              pronunciation: '/nɪˈɡəʊʃɪeɪt/',
+              pronunciation: '/ni-go-shee-ate/',
               definition: 'To try to reach an agreement or...',
               type: 'Verb',
               difficulty: 'Hard',
             ),
             _buildWordCard(
               word: 'Investment',
-              pronunciation: '/ɪnˈvɛstm(ə)nt/',
+              pronunciation: '/in-vest-ment/',
               definition: 'The action or process of investin...',
               type: 'Noun',
             ),
             _buildWordCard(
               word: 'Revenue',
-              pronunciation: '/rɛvənjuː/',
+              pronunciation: '/rev-uh-noo/',
               definition: 'Income, especially when of an...',
               type: 'Noun',
             ),
             _buildWordCard(
               word: 'Liability',
-              pronunciation: '/lʌɪəˈbɪlɪti/',
+              pronunciation: '/lye-uh-bil-ih-tee/',
               definition: 'The state of being responsible f...',
               type: 'Noun',
             ),
             _buildWordCard(
               word: 'Equity',
-              pronunciation: '/ˈɛkwɪti/',
+              pronunciation: '/ek-wih-tee/',
               definition: 'The value of the shares issued b...',
               type: 'Noun',
             ),
