@@ -163,11 +163,11 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    const Center(child: Text('Dashboard')),
     const HomeScreen(),
+    const Center(child: Text('Search')),
     const BookmarksScreen(),
     const Center(child: Text('Quiz')),
   ];
@@ -177,53 +177,65 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.grey.shade200, width: 1)),
+          color: const Color(0xFFF9FAFB),
+          border: Border(top: BorderSide(color: Colors.grey.shade300, width: 1)),
         ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          selectedItemColor: const Color(0xFF0A225F),
-          unselectedItemColor: Colors.grey.shade600,
-          selectedFontSize: 12,
-          unselectedFontSize: 12,
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          items: [
-            _buildNavItem(Icons.home_outlined, 'Dashboard', 0),
-            _buildNavItem(Icons.search, 'Search', 1),
-            _buildNavItem(Icons.bookmark_border, 'Bookmarks', 2),
-            _buildNavItem(Icons.help_outline, 'Quiz', 3),
-          ],
+        child: SafeArea(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(Icons.home_outlined, 'Dashboard', 0),
+              _buildNavItem(Icons.search, 'Search', 1),
+              _buildNavItem(Icons.bookmark_border, 'Bookmarks', 2),
+              _buildNavItem(Icons.quiz_outlined, 'Quiz', 3), 
+            ],
+          ),
         ),
       ),
     );
   }
 
-  BottomNavigationBarItem _buildNavItem(IconData icon, String label, int index) {
+  Widget _buildNavItem(IconData icon, String label, int index) {
     bool isSelected = _selectedIndex == index;
-    return BottomNavigationBarItem(
-      icon: Container(
-        margin: const EdgeInsets.only(bottom: 4, top: 4),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedIndex = index;
+        });
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: isSelected
             ? BoxDecoration(
-                color: const Color(0xFF0A225F),
-                borderRadius: BorderRadius.circular(20),
+                color: const Color(0xFF0A225F), // Dark blue background for selected item
+                borderRadius: BorderRadius.circular(24),
               )
-            : const BoxDecoration(),
-        child: Icon(
-          icon,
-          color: isSelected ? Colors.white : Colors.grey.shade600,
-          size: 24,
+            : const BoxDecoration(
+                color: Colors.transparent,
+              ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: isSelected ? Colors.white : Colors.grey.shade700,
+              size: 24,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.grey.shade700,
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ],
         ),
       ),
-      label: label,
     );
   }
 }
@@ -234,7 +246,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9FB),
+      backgroundColor: const Color(0xFFF9FAFB), // Very light gray from the design background
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -247,149 +259,111 @@ class HomeScreen extends StatelessWidget {
           style: TextStyle(
             color: Color(0xFF0A225F),
             fontWeight: FontWeight.w900,
-            fontSize: 22,
+            fontSize: 24,
+            letterSpacing: 0.5,
           ),
         ),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle_outlined, color: Colors.black87),
+            icon: const Icon(Icons.account_circle_outlined, color: Colors.black87, size: 28),
             onPressed: () {},
           ),
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Category Pills
-            Row(
-              children: [
-                _buildCategoryPill('Academic', const Color(0xFFF5D3D9), const Color(0xFF8B4B59)),
-                const SizedBox(width: 10),
-                _buildCategoryPill('Business', const Color(0xFF0A225F), Colors.white),
-              ],
-            ),
-            const SizedBox(height: 20),
-            // Header Texts
+            // Greeting text
             const Text(
-              'Business Essentials',
+              'Hello, Toyyibah!',
               style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF111827),
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
+                color: Color(0xFF0A225F),
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             const Text(
-              'Master the language of the modern\ncorporate world.',
+              'Ready to expand your lexicon today?',
               style: TextStyle(
                 fontSize: 15,
                 color: Color(0xFF4B5563),
-                height: 1.4,
               ),
             ),
             const SizedBox(height: 24),
-            // Search Bar
+
+            // Word of the Day Card
             Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search for words...',
-                  hintStyle: TextStyle(color: Color(0xFF9CA3AF)),
-                  prefixIcon: Icon(Icons.search, color: Color(0xFF9CA3AF)),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(vertical: 16),
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Progress Card
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: const Color(0xFF051747),
+                color: const Color(0xFFFFDDE4), // Soft pink background
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Stack(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Positioned(
-                    right: -20,
-                    bottom: -20,
-                    child: Icon(
-                      Icons.business_center,
-                      size: 100,
-                      color: Colors.white.withOpacity(0.08),
+                  const Text(
+                    'Word of the Day',
+                    style: TextStyle(
+                      color: Color(0xFF4A5568),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Ephemeral',
+                    style: TextStyle(
+                      color: Color(0xFF0A225F),
+                      fontSize: 32,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    '/əˈfem(ə)rəl/',
+                    style: TextStyle(
+                      color: Color(0xFF4A5568),
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Lasting for a very short time; transient\nor fleeting.',
+                    style: TextStyle(
+                      color: Color(0xFF0A225F),
+                      fontSize: 15,
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'CATEGORY PROGRESS',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.2,
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF0A225F), // Dark blue matching theme
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: const Text(
+                          'Learn More',
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        '12 / 48 Words',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      // Progress bar track
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          final progressWidth = constraints.maxWidth * (12 / 48);
-                          return Stack(
-                            clipBehavior: Clip.none,
-                            alignment: Alignment.centerLeft,
-                            children: [
-                              // Track
-                              Container(
-                                height: 6,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF2C3E6B),
-                                  borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                              // Progress
-                              Container(
-                                height: 6,
-                                width: progressWidth,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFF5D3D9),
-                                  borderRadius: BorderRadius.circular(3),
-                                ),
-                              ),
-                              // Dot
-                              Positioned(
-                                left: progressWidth - 6,
-                                child: Container(
-                                  width: 12,
-                                  height: 12,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xFFF5D3D9),
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
+                      IconButton(
+                        icon: const Icon(Icons.bookmark_border, color: Color(0xFF0A225F)),
+                        onPressed: () {},
                       ),
                     ],
                   ),
@@ -397,87 +371,182 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            // Vocabulary List
-            _buildWordCard(
-              context: context,
-              word: 'Negotiate',
-              pronunciation: '/ni-go-shee-ate/',
-              definition: 'To try to reach an agreement or...',
-              type: 'Verb',
-              difficulty: 'Hard',
+
+            // Weekly Goal Section
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Weekly Goal',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0A225F),
+                  ),
+                ),
+                Text(
+                  '42/50 words',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey.shade700,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
-            _buildWordCard(
-              context: context,
-              word: 'Investment',
-              pronunciation: '/in-vest-ment/',
-              definition: 'The action or process of investin...',
-              type: 'Noun',
+            const SizedBox(height: 12),
+            // Custom Progress bar
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final double progress = 42 / 50;
+                final double width = constraints.maxWidth;
+                return Stack(
+                  alignment: Alignment.centerLeft,
+                  children: [
+                    // Background track
+                    Container(
+                      width: width,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                    // Progress fill
+                    Container(
+                      width: width * progress,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0A225F),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                    // Indicator dot
+                    Positioned(
+                      left: width * progress - 6,
+                      child: Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFDDE4), // Pink color matching theme
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2), // Small white outline
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
-            _buildWordCard(
-              context: context,
-              word: 'Revenue',
-              pronunciation: '/rev-uh-noo/',
-              definition: 'Income, especially when of an...',
-              type: 'Noun',
+
+            const SizedBox(height: 32),
+            
+            // Learning Categories header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Learning Categories',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF111827),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'View All',
+                    style: TextStyle(
+                      color: Color(0xFF6B7AC4), // Text button color
+                      fontWeight: FontWeight.w600,
+                    ), 
+                  ),
+                ),
+              ],
             ),
-            _buildWordCard(
-              context: context,
-              word: 'Liability',
-              pronunciation: '/lye-uh-bil-ih-tee/',
-              definition: 'The state of being responsible f...',
-              type: 'Noun',
+            const SizedBox(height: 16),
+            
+            // Learning Categories Grid
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              childAspectRatio: 1.05,
+              children: [
+                _buildCategoryCard('Business', '1,240 words', Icons.business_center_outlined),
+                _buildCategoryCard('Travel', '850 words', Icons.flight),
+                _buildCategoryCard('Academic', '2,100 words', Icons.school_outlined),
+                _buildCategoryCard('Daily Life', '3,420 words', Icons.home_outlined),
+              ],
             ),
-            _buildWordCard(
-              context: context,
-              word: 'Equity',
-              pronunciation: '/ek-wih-tee/',
-              definition: 'The value of the shares issued b...',
-              type: 'Noun',
+            const SizedBox(height: 24),
+
+            // Mastery Score Card
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              decoration: BoxDecoration(
+                color: const Color(0xFF0A225F), // Dark blue background
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Mastery Score',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Top 5% of learners this week',
+                        style: TextStyle(
+                          color: Colors.grey.shade300,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Text(
+                        '840',
+                        style: TextStyle(
+                          color: Color(0xFFFFDDE4), // Pink color for the score
+                          fontSize: 32,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      Text(
+                        'Points',
+                        style: TextStyle(
+                          color: Colors.grey.shade300,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 20), // Bottom padding
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCategoryPill(String text, Color bgColor, Color textColor) {
+  Widget _buildCategoryCard(String title, String subtitle, IconData icon) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: textColor,
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildWordCard({
-    required BuildContext context,
-    required String word,
-    required String pronunciation,
-    required String definition,
-    required String type,
-    String? difficulty,
-  }) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const WordDetailScreen(),
-          ),
-        );
-      },
-      child: Container(
-      margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -487,77 +556,33 @@ class HomeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    word,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF111827),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    pronunciation,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF9CA3AF),
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ],
-              ),
-              const Icon(Icons.bookmark_border, color: Color(0xFF6B7280)),
-            ],
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: const Color(0xFF0A225F), size: 24),
           ),
-          const SizedBox(height: 8),
+          const Spacer(),
           Text(
-            definition,
+            title,
             style: const TextStyle(
-              fontSize: 15,
-              color: Color(0xFF4B5563),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF111827),
             ),
           ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFDF2F4),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  type,
-                  style: const TextStyle(
-                    color: Color(0xFF8B4B59),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              if (difficulty != null) ...[
-                const SizedBox(width: 12),
-                const Icon(Icons.trending_up, size: 16, color: Color(0xFF111827)),
-                const SizedBox(width: 4),
-                Text(
-                  difficulty,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF111827),
-                  ),
-                ),
-              ]
-            ],
+          const SizedBox(height: 4),
+          Text(
+            subtitle,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey.shade600,
+            ),
           ),
         ],
       ),
-    ));
+    );
   }
 }
