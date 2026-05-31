@@ -6,7 +6,7 @@ class WordDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9FB),
+      backgroundColor: const Color(0xFFF9FAFB), // Changed slightly closer to white/gray background
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -19,13 +19,14 @@ class WordDetailScreen extends StatelessWidget {
           style: TextStyle(
             color: Color(0xFF0A225F),
             fontWeight: FontWeight.w900,
-            fontSize: 22,
+            fontSize: 24,
+            letterSpacing: 0.5,
           ),
         ),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle_outlined, color: Color(0xFF0A225F)),
+            icon: const Icon(Icons.account_circle_outlined, color: Color(0xFF0A225F), size: 28),
             onPressed: () {},
           ),
         ],
@@ -42,43 +43,45 @@ class WordDetailScreen extends StatelessWidget {
                 const Text(
                   'Negotiate',
                   style: TextStyle(
-                    fontSize: 42,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 48, // Made larger to match the image accurately
+                    fontWeight: FontWeight.w500,
                     color: Color(0xFF0A225F), 
+                    letterSpacing: -1,
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: const BoxDecoration(
-                    color: Color(0xFFE2E4F6),
+                    color: Color(0xFFE0E5FF), // Slightly purple-blue to match image exactly
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.volume_up, color: Color(0xFF0A225F), size: 28),
+                  child: const Icon(Icons.volume_up_outlined, color: Color(0xFF0A225F), size: 28),
                 ),
               ],
             ),
             const SizedBox(height: 8),
             // Tag and pronunciation
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF8D7DA),
+                    color: const Color(0xFFFFDDE4), // Pink color matching the image
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: const Text(
                     'Verb',
                     style: TextStyle(
                       color: Color(0xFF8B4B59),
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                       fontSize: 14,
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 14),
                 const Text(
-                  '/ni-go-shee-ate/',
+                  '/nəˈɡōSHēˌāt/', // Updated pronunciation to match exactly
                   style: TextStyle(
                     fontSize: 18,
                     color: Color(0xFF6B7280),
@@ -87,7 +90,8 @@ class WordDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
+            
             // Definition Card
             Container(
               width: double.infinity,
@@ -95,9 +99,6 @@ class WordDetailScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4)),
-                ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,13 +106,13 @@ class WordDetailScreen extends StatelessWidget {
                   Text(
                     'DEFINITION',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 13,
                       fontWeight: FontWeight.w700,
-                      color: const Color(0xFF8B4B59).withOpacity(0.8),
+                      color: const Color(0xFF8B4B59).withOpacity(0.9),
                       letterSpacing: 1.5,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   const Text(
                     'To discuss something in order to reach an agreement, especially in business or politics.',
                     style: TextStyle(
@@ -124,6 +125,7 @@ class WordDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
+            
             // Example Sentence Card
             Container(
               width: double.infinity,
@@ -131,9 +133,6 @@ class WordDetailScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4)),
-                ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,20 +140,21 @@ class WordDetailScreen extends StatelessWidget {
                   Text(
                     'EXAMPLE SENTENCE',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 13,
                       fontWeight: FontWeight.w700,
-                      color: const Color(0xFF8B4B59).withOpacity(0.8),
+                      color: const Color(0xFF8B4B59).withOpacity(0.9),
                       letterSpacing: 1.5,
                     ),
                   ),
                   const SizedBox(height: 16),
                   IntrinsicHeight(
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Container(
-                          width: 4,
+                          width: 3,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF8D7DA),
+                            color: const Color(0xFFFFDDE4),
                             borderRadius: BorderRadius.circular(2),
                           ),
                         ),
@@ -165,7 +165,7 @@ class WordDetailScreen extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 17,
                                 color: Color(0xFF4B5563),
-                                height: 1.4,
+                                height: 1.5,
                                 fontStyle: FontStyle.italic,
                               ),
                               children: [
@@ -173,8 +173,11 @@ class WordDetailScreen extends StatelessWidget {
                                 TextSpan(
                                   text: 'negotiating',
                                   style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF0A225F),
+                                    fontWeight: FontWeight.w900,
+                                    color: Color(0xFF03143F),
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Color(0xFFFFDDE4),
+                                    decorationThickness: 4, 
                                   ),
                                 ),
                                 TextSpan(text: ' the final terms of the merger, aiming for a resolution by Friday."'),
@@ -189,29 +192,39 @@ class WordDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // Synonyms and Image
+            
+            // Synonyms and Image Row
             Row(
               children: [
                 Expanded(
                   child: Container(
+                    height: 180, // Giving them fixed height to match nicely
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFE4DC),
+                      color: const Color(0xFFFFDACF),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Icon(Icons.handshake_outlined, size: 32, color: Color(0xFF4A1E14)),
-                        SizedBox(height: 12),
+                        SizedBox(height: 16),
                         Text(
                           'Synonyms',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF4A1E14)),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w800, 
+                            fontSize: 14, 
+                            color: Color(0xFF4A1E14)
+                          ),
                         ),
                         SizedBox(height: 4),
                         Text(
                           'Mediate,\nParley,\nArbitrate',
-                          style: TextStyle(color: Color(0xFF6B3324), fontSize: 15, height: 1.4),
+                          style: TextStyle(
+                            color: Color(0xFF6B3324), 
+                            fontSize: 15, 
+                            height: 1.5
+                          ),
                         ),
                       ],
                     ),
@@ -220,7 +233,7 @@ class WordDetailScreen extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: Container(
-                    height: 170, 
+                    height: 180, 
                     decoration: BoxDecoration(
                       color: const Color(0xFF1B2C4F),
                       borderRadius: BorderRadius.circular(16),
@@ -235,7 +248,7 @@ class WordDetailScreen extends StatelessWidget {
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
+                          colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
                         ),
                       ),
                       child: const Align(
@@ -247,7 +260,8 @@ class WordDetailScreen extends StatelessWidget {
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                              fontSize: 13,
+                              letterSpacing: 0.5,
                             ),
                           ),
                         ),
@@ -257,8 +271,9 @@ class WordDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 32),
-            // Button
+            const SizedBox(height: 24),
+            
+            // Add to Bookmark Button
             SizedBox(
               width: double.infinity,
               height: 56,
@@ -267,7 +282,11 @@ class WordDetailScreen extends StatelessWidget {
                 icon: const Icon(Icons.bookmark_border, color: Colors.white),
                 label: const Text(
                   'Add to Bookmark',
-                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: Colors.white, 
+                    fontSize: 16, 
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF03143F), 
@@ -279,10 +298,11 @@ class WordDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
+            
             // Footer
             const Center(
               child: Text(
-                'WordRise Vocabulary Explorer • 2024',
+                'WordRise Vocabulary Explorer • 2026',
                 style: TextStyle(
                   color: Color(0xFF9CA3AF),
                   fontSize: 12,
