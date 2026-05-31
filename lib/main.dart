@@ -169,7 +169,7 @@ class _MainScreenState extends State<MainScreen> {
     const HomeScreen(),
     const Center(child: Text('Search')),
     const BookmarksScreen(),
-    const Center(child: Text('Quiz')),
+    const QuizScreen(),
   ];
 
   @override
@@ -579,6 +579,378 @@ class HomeScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 12,
               color: Colors.grey.shade600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+enum _OptionState { unselected, correct, incorrect }
+
+class QuizScreen extends StatelessWidget {
+  const QuizScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF9FAFB),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.menu, color: Colors.black87),
+          onPressed: () {},
+        ),
+        title: const Text(
+          'WordRise',
+          style: TextStyle(
+            color: Color(0xFF0A225F),
+            fontWeight: FontWeight.w900,
+            fontSize: 24,
+            letterSpacing: 0.5,
+          ),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle_outlined, color: Colors.black87, size: 28),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            // Progress Section
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Question 4 of 10',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF111827),
+                    fontSize: 14,
+                  ),
+                ),
+                const Text(
+                  '40% Complete',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0A225F),
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final double progress = 4 / 10;
+                final double width = constraints.maxWidth;
+                return Stack(
+                  alignment: Alignment.centerLeft,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                    Container(
+                      width: width * progress,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF0A225F),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                    Positioned(
+                      left: width * progress - 6,
+                      child: Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFDDE4),
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: 32),
+            
+            // Question Card
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+                border: Border.all(color: Colors.grey.shade100),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFE4E8),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Text(
+                          'Noun',
+                          style: TextStyle(
+                            color: Color(0xFFC05763),
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          'Economics',
+                          style: TextStyle(
+                            color: Colors.grey.shade700,
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  RichText(
+                    text: const TextSpan(
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w900,
+                        color: Color(0xFF0A225F),
+                        fontFamily: 'Inter',
+                      ),
+                      children: [
+                        TextSpan(text: 'What is the meaning of\n'),
+                        TextSpan(
+                          text: 'REVENUE?',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Choose the most accurate definition used in a business context.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF4B5563),
+                      height: 1.4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Options
+            _buildOption(
+              letter: 'A',
+              text: 'The total amount of money received from sales.',
+              state: _OptionState.unselected,
+            ),
+            _buildOption(
+              letter: 'B',
+              text: 'The net profit after all expenses are paid.',
+              state: _OptionState.incorrect,
+            ),
+            _buildOption(
+              letter: 'C',
+              text: 'The income generated from normal business operations.',
+              state: _OptionState.correct,
+            ),
+            _buildOption(
+              letter: 'D',
+              text: 'The internal debt owed to shareholders.',
+              state: _OptionState.unselected,
+            ),
+            const SizedBox(height: 24),
+
+            // Continue Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0A225F),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Continue to Next Question',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Icon(Icons.arrow_forward, size: 20),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Skip Button
+            TextButton(
+              onPressed: () {},
+              child: const Text(
+                'Skip Question',
+                style: TextStyle(
+                  color: Color(0xFF111827),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOption({
+    required String letter,
+    required String text,
+    required _OptionState state,
+  }) {
+    Color borderColor;
+    Color bgColor;
+    Widget leadingIcon;
+    TextStyle textStyle;
+
+    switch (state) {
+      case _OptionState.unselected:
+        borderColor = Colors.grey.shade300;
+        bgColor = Colors.white;
+        leadingIcon = Container(
+          width: 24,
+          height: 24,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.grey.shade400, width: 1.5),
+          ),
+          child: Text(
+            letter,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey.shade600,
+            ),
+          ),
+        );
+        textStyle = const TextStyle(
+          color: Color(0xFF374151),
+          fontSize: 14,
+        );
+        break;
+      case _OptionState.incorrect:
+        borderColor = const Color(0xFFFCA5A5);
+        bgColor = const Color(0xFFFFF5F5);
+        leadingIcon = Container(
+          width: 24,
+          height: 24,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFFDC2626), width: 1.5),
+          ),
+          child: const Icon(
+            Icons.close,
+            size: 16,
+            color: Color(0xFFDC2626),
+          ),
+        );
+        textStyle = const TextStyle(
+          color: Color(0xFFDC2626),
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        );
+        break;
+      case _OptionState.correct:
+        borderColor = const Color(0xFF0A225F);
+        bgColor = Colors.white;
+        leadingIcon = Container(
+          width: 24,
+          height: 24,
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color(0xFF0A225F),
+          ),
+          child: const Icon(
+            Icons.check,
+            size: 16,
+            color: Colors.white,
+          ),
+        );
+        textStyle = const TextStyle(
+          color: Color(0xFF0A225F),
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        );
+        break;
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: borderColor,
+          width: state == _OptionState.correct ? 2.5 : 1.0,
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          leadingIcon,
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              text,
+              style: textStyle,
             ),
           ),
         ],
