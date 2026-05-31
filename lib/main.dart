@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'word_detail_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -397,6 +398,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 24),
             // Vocabulary List
             _buildWordCard(
+              context: context,
               word: 'Negotiate',
               pronunciation: '/ni-go-shee-ate/',
               definition: 'To try to reach an agreement or...',
@@ -404,24 +406,28 @@ class HomeScreen extends StatelessWidget {
               difficulty: 'Hard',
             ),
             _buildWordCard(
+              context: context,
               word: 'Investment',
               pronunciation: '/in-vest-ment/',
               definition: 'The action or process of investin...',
               type: 'Noun',
             ),
             _buildWordCard(
+              context: context,
               word: 'Revenue',
               pronunciation: '/rev-uh-noo/',
               definition: 'Income, especially when of an...',
               type: 'Noun',
             ),
             _buildWordCard(
+              context: context,
               word: 'Liability',
               pronunciation: '/lye-uh-bil-ih-tee/',
               definition: 'The state of being responsible f...',
               type: 'Noun',
             ),
             _buildWordCard(
+              context: context,
               word: 'Equity',
               pronunciation: '/ek-wih-tee/',
               definition: 'The value of the shares issued b...',
@@ -453,13 +459,23 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildWordCard({
+    required BuildContext context,
     required String word,
     required String pronunciation,
     required String definition,
     required String type,
     String? difficulty,
   }) {
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const WordDetailScreen(),
+          ),
+        );
+      },
+      child: Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -541,6 +557,6 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }
