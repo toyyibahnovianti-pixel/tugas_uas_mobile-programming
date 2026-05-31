@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'word_detail_screen.dart';
+import 'bookmarks_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -167,7 +168,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     const Center(child: Text('Dashboard')),
     const HomeScreen(),
-    const Center(child: Text('Bookmarks')),
+    const BookmarksScreen(),
     const Center(child: Text('Quiz')),
   ];
 
