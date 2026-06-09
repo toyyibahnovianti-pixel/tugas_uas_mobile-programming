@@ -253,7 +253,11 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.menu, color: Colors.black87),
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Menu coming soon!')),
+            );
+          },
         ),
         title: const Text(
           'WordRise',
@@ -268,7 +272,11 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle_outlined, color: Colors.black87, size: 28),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Profile feature coming soon!')),
+              );
+            },
           ),
         ],
       ),
@@ -369,7 +377,11 @@ class HomeScreen extends StatelessWidget {
                       ),
                       IconButton(
                         icon: const Icon(Icons.bookmark_border, color: Color(0xFF0A225F)),
-                        onPressed: () {},
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Word saved to bookmarks!')),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -612,7 +624,11 @@ class QuizScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.menu, color: Colors.black87),
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Menu coming soon!')),
+            );
+          },
         ),
         title: const Text(
           'WordRise',
@@ -627,7 +643,11 @@ class QuizScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle_outlined, color: Colors.black87, size: 28),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Profile feature coming soon!')),
+              );
+            },
           ),
         ],
       ),
@@ -812,7 +832,11 @@ class QuizScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Wait for the next question update')),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0A225F),
                   foregroundColor: Colors.white,
@@ -841,7 +865,11 @@ class QuizScreen extends StatelessWidget {
 
             // Skip Button
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Question skipped!')),
+                );
+              },
               child: const Text(
                 'Skip Question',
                 style: TextStyle(
