@@ -27,7 +27,11 @@ class WordDetailScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle_outlined, color: Color(0xFF0A225F), size: 28),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Profile feature coming soon!')),
+              );
+            },
           ),
         ],
       ),
@@ -278,7 +282,11 @@ class WordDetailScreen extends StatelessWidget {
               width: double.infinity,
               height: 56,
               child: ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Word saved to bookmarks!')),
+                  );
+                },
                 icon: const Icon(Icons.bookmark_border, color: Colors.white),
                 label: const Text(
                   'Add to Bookmark',

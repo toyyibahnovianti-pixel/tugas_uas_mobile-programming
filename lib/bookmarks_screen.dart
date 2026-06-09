@@ -12,7 +12,11 @@ class BookmarksScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.menu, color: Color(0xFF0A225F)),
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Menu coming soon!')),
+            );
+          },
         ),
         title: const Text(
           'WordRise',
@@ -26,7 +30,11 @@ class BookmarksScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle_outlined, color: Color(0xFF0A225F)),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Profile feature coming soon!')),
+              );
+            },
           ),
         ],
       ),
@@ -235,7 +243,11 @@ class BookmarksScreen extends StatelessWidget {
                 ],
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Word removed from bookmarks!')),
+                  );
+                },
                 icon: const Icon(Icons.delete_outline, color: Colors.grey),
                 constraints: const BoxConstraints(),
                 padding: EdgeInsets.zero,

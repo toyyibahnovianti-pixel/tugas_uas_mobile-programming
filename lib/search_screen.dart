@@ -20,7 +20,11 @@ class _SearchScreenState extends State<SearchScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.menu, color: Colors.black87),
-          onPressed: () {},
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Menu coming soon!')),
+            );
+          },
         ),
         title: const Text(
           'Search',
@@ -35,7 +39,11 @@ class _SearchScreenState extends State<SearchScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle_outlined, color: Colors.black87, size: 28),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Profile feature coming soon!')),
+              );
+            },
           ),
         ],
       ),
@@ -67,7 +75,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   prefixIcon: const Icon(Icons.search, color: Color(0xFF0A225F)),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.tune, color: Color(0xFF6B7280)),
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Filter options coming soon!')),
+                      );
+                    },
                   ),
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(vertical: 18),
@@ -88,7 +100,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Recent searches cleared!')),
+                    );
+                  },
                   child: const Text(
                     'Clear All',
                     style: TextStyle(
