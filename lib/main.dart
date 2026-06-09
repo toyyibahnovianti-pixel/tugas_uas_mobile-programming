@@ -612,11 +612,96 @@ class HomeScreen extends StatelessWidget {
 
 enum _OptionState { unselected, correct, incorrect }
 
-class QuizScreen extends StatelessWidget {
+class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
 
   @override
+  State<QuizScreen> createState() => _QuizScreenState();
+}
+
+class _QuizScreenState extends State<QuizScreen> {
+  int _currentQuestionIndex = 0;
+  int? _selectedOptionIndex;
+  bool _isAnswerChecked = false;
+  
+  final List<Map<String, dynamic>> _questions = [
+    {
+      'word': 'REVENUE',
+      'type': 'Noun',
+      'category': 'Economics',
+      'questionText': 'What is the meaning of\n',
+      'subtitle': 'Choose the most accurate definition used in a business context.',
+      'options': [
+        'The total amount of money received from sales.',
+        'The net profit after all expenses are paid.',
+        'The income generated from normal business operations.',
+        'The internal debt owed to shareholders.',
+      ],
+      'correctIndex': 2,
+    },
+    {
+      'word': 'EPHEMERAL',
+      'type': 'Adjective',
+      'category': 'General',
+      'questionText': 'What does it mean to be\n',
+      'subtitle': 'Select the definition that best fits the word.',
+      'options': [
+        'Lasting for a very long time.',
+        'Lasting for a very short time; transient.',
+        'Having a glowing or luminous appearance.',
+        'Extremely large or immense.',
+      ],
+      'correctIndex': 1,
+    },
+    {
+      'word': 'NEGOTIATE',
+      'type': 'Verb',
+      'category': 'Business',
+      'questionText': 'How would you define\n',
+      'subtitle': 'Choose the correct action associated with this word.',
+      'options': [
+        'To force someone to agree with your terms.',
+        'To officially sign a document without reading.',
+        'To discuss something in order to reach an agreement.',
+        'To ignore a problem and hope it resolves itself.',
+      ],
+      'correctIndex': 2,
+    },
+  ];
+
+  void _checkAnswer(int index) {
+    if (_isAnswerChecked) return;
+    setState(() {
+      _selectedOptionIndex = index;
+      _isAnswerChecked = true;
+    });
+  }
+
+  void _nextQuestion() {
+    if (_currentQuestionIndex < _questions.length - 1) {
+      setState(() {
+        _currentQuestionIndex++;
+        _selectedOptionIndex = null;
+        _isAnswerChecked = false;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Quiz Completed! Great job!')),
+      );
+      setState(() {
+        _currentQuestionIndex = 0;
+        _selectedOptionIndex = null;
+        _isAnswerChecked = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final question = _questions[_currentQuestionIndex];
+    final progress = (_currentQuestionIndex + 1) / _questions.length;
+    final letters = ['A', 'B', 'C', 'D'];
+
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
       appBar: AppBar(
@@ -659,17 +744,17 @@ class QuizScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Question 4 of 10',
-                  style: TextStyle(
+                Text(
+                  'Question ${_currentQuestionIndex + 1} of ${_questions.length}',
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF111827),
                     fontSize: 14,
                   ),
                 ),
-                const Text(
-                  '40% Complete',
-                  style: TextStyle(
+                Text(
+                  '${(progress * 100).toInt()}% Complete',
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF0A225F),
                     fontSize: 12,
@@ -680,7 +765,6 @@ class QuizScreen extends StatelessWidget {
             const SizedBox(height: 8),
             LayoutBuilder(
               builder: (context, constraints) {
-                final double progress = 4 / 10;
                 final double width = constraints.maxWidth;
                 return Stack(
                   alignment: Alignment.centerLeft,
@@ -693,7 +777,8 @@ class QuizScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
-                    Container(
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
                       width: width * progress,
                       height: 8,
                       decoration: BoxDecoration(
@@ -701,8 +786,9 @@ class QuizScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
-                    Positioned(
-                      left: width * progress - 6,
+                    AnimatedPositioned(
+                      duration: const Duration(milliseconds: 300),
+                      left: (width * progress) - 6 < 0 ? 0 : (width * progress) - 6,
                       child: Container(
                         width: 12,
                         height: 12,
@@ -746,9 +832,9 @@ class QuizScreen extends StatelessWidget {
                           color: const Color(0xFFFFE4E8),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Text(
-                          'Noun',
-                          style: TextStyle(
+                        child: Text(
+                          question['type'] as String,
+                          style: const TextStyle(
                             color: Color(0xFFC05763),
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
@@ -763,7 +849,7 @@ class QuizScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
-                          'Economics',
+                          question['category'] as String,
                           style: TextStyle(
                             color: Colors.grey.shade700,
                             fontSize: 11,
@@ -775,26 +861,26 @@ class QuizScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   RichText(
-                    text: const TextSpan(
-                      style: TextStyle(
+                    text: TextSpan(
+                      style: const TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w900,
                         color: Color(0xFF0A225F),
                         fontFamily: 'Inter',
                       ),
                       children: [
-                        TextSpan(text: 'What is the meaning of\n'),
+                        TextSpan(text: question['questionText'] as String),
                         TextSpan(
-                          text: 'REVENUE?',
-                          style: TextStyle(fontStyle: FontStyle.italic),
+                          text: question['word'] as String,
+                          style: const TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    'Choose the most accurate definition used in a business context.',
-                    style: TextStyle(
+                  Text(
+                    question['subtitle'] as String,
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Color(0xFF4B5563),
                       height: 1.4,
@@ -806,25 +892,30 @@ class QuizScreen extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Options
-            _buildOption(
-              letter: 'A',
-              text: 'The total amount of money received from sales.',
-              state: _OptionState.unselected,
-            ),
-            _buildOption(
-              letter: 'B',
-              text: 'The net profit after all expenses are paid.',
-              state: _OptionState.incorrect,
-            ),
-            _buildOption(
-              letter: 'C',
-              text: 'The income generated from normal business operations.',
-              state: _OptionState.correct,
-            ),
-            _buildOption(
-              letter: 'D',
-              text: 'The internal debt owed to shareholders.',
-              state: _OptionState.unselected,
+            ...List.generate(
+              (question['options'] as List<String>).length,
+              (index) {
+                final text = (question['options'] as List<String>)[index];
+                final isCorrect = index == question['correctIndex'];
+                
+                _OptionState state = _OptionState.unselected;
+                if (_isAnswerChecked) {
+                  if (index == _selectedOptionIndex) {
+                    state = isCorrect ? _OptionState.correct : _OptionState.incorrect;
+                  } else if (isCorrect) {
+                     state = _OptionState.correct;
+                  }
+                }
+
+                return GestureDetector(
+                  onTap: () => _checkAnswer(index),
+                  child: _buildOption(
+                    letter: letters[index],
+                    text: text,
+                    state: state,
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 24),
 
@@ -832,14 +923,12 @@ class QuizScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Wait for the next question update')),
-                  );
-                },
+                onPressed: _isAnswerChecked ? _nextQuestion : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0A225F),
                   foregroundColor: Colors.white,
+                  disabledBackgroundColor: Colors.grey.shade300,
+                  disabledForegroundColor: Colors.grey.shade600,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -864,21 +953,18 @@ class QuizScreen extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Skip Button
-            TextButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Question skipped!')),
-                );
-              },
-              child: const Text(
-                'Skip Question',
-                style: TextStyle(
-                  color: Color(0xFF111827),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
+            if (!_isAnswerChecked)
+              TextButton(
+                onPressed: _nextQuestion,
+                child: const Text(
+                  'Skip Question',
+                  style: TextStyle(
+                    color: Color(0xFF111827),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
                 ),
               ),
-            ),
             const SizedBox(height: 20),
           ],
         ),
