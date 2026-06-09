@@ -116,18 +116,21 @@ class BookmarksScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            // Word List
+            // Word List - Sekarang menyertakan context sebagai parameter
             _buildSavedWordCard(
+              context,
               word: 'Ephemeral',
               type: 'Adjective',
               definition: 'Lasting for a very short time; fleeting or transient.',
             ),
             _buildSavedWordCard(
+              context,
               word: 'Sagacious',
               type: 'Adjective',
               definition: 'Having or showing keen mental discernment and good judgment.',
             ),
             _buildSavedWordCard(
+              context,
               word: 'Pernicious',
               type: 'Adjective',
               definition: 'Having a harmful effect, especially in a gradual or subtle way.',
@@ -189,7 +192,9 @@ class BookmarksScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSavedWordCard({
+  // Ditambahkan BuildContext context pada parameter fungsi ini
+  Widget _buildSavedWordCard(
+    BuildContext context, {
     required String word,
     required String type,
     required String definition,
