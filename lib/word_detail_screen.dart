@@ -224,11 +224,12 @@ class WordDetailScreen extends StatelessWidget {
             const SizedBox(height: 16),
             
             // Synonyms and Image Row
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 180, // Giving them fixed height to match nicely
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFFDACF),
@@ -263,7 +264,6 @@ class WordDetailScreen extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: Container(
-                    height: 180, 
                     decoration: BoxDecoration(
                       color: const Color(0xFF1B2C4F),
                       borderRadius: BorderRadius.circular(16),
