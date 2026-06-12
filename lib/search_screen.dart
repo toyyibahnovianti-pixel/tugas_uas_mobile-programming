@@ -121,10 +121,54 @@ class _SearchScreenState extends State<SearchScreen> {
               child: ListView(
                 physics: const BouncingScrollPhysics(),
                 children: [
-                  _buildSearchResultCard(context, 'Negotiate', 'Verb', '/nəˈɡōSHēˌāt/'),
-                  _buildSearchResultCard(context, 'Revenue', 'Noun', '/ˈrevəˌn(y)o͞o/'),
-                  _buildSearchResultCard(context, 'Ephemeral', 'Adjective', '/əˈfem(ə)rəl/'),
-                  _buildSearchResultCard(context, 'Arbitrate', 'Verb', '/ˈärbəˌtrāt/'),
+                  _buildSearchResultCard(
+                    context, 
+                    'Negotiate', 
+                    'Verb', 
+                    '/nəˈɡōSHēˌāt/',
+                    'To discuss something in order to reach an agreement, especially in business or politics.',
+                    '"The two companies are still ',
+                    'negotiating',
+                    ' the final terms of the merger, aiming for a resolution by Friday."',
+                    'Mediate,\nParley,\nArbitrate',
+                    'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                  ),
+                  _buildSearchResultCard(
+                    context, 
+                    'Revenue', 
+                    'Noun', 
+                    '/ˈrevəˌn(y)o͞o/',
+                    'The income generated from normal business operations and other business activities.',
+                    '"The company\'s quarterly ',
+                    'revenue',
+                    ' significantly exceeded analysts\' expectations for this year."',
+                    'Income,\nEarnings,\nProfits',
+                    'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                  ),
+                  _buildSearchResultCard(
+                    context, 
+                    'Ephemeral', 
+                    'Adjective', 
+                    '/əˈfem(ə)rəl/',
+                    'Lasting for a very short time; transient or fleeting.',
+                    '"The beauty of the cherry blossoms is ',
+                    'ephemeral',
+                    ', lasting only a few weeks each spring."',
+                    'Transient,\nFleeting,\nShort-lived',
+                    'https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                  ),
+                  _buildSearchResultCard(
+                    context, 
+                    'Arbitrate', 
+                    'Verb', 
+                    '/ˈärbəˌtrāt/',
+                    'To reach an authoritative judgment or settlement.',
+                    '"An independent body was called in to ',
+                    'arbitrate',
+                    ' between the management and the union."',
+                    'Adjudicate,\nMediate,\nResolve',
+                    'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                  ),
                 ],
               ),
             ),
@@ -134,13 +178,33 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _buildSearchResultCard(BuildContext context, String word, String type, String pronunciation) {
+  Widget _buildSearchResultCard(
+    BuildContext context, 
+    String word, 
+    String type, 
+    String pronunciation,
+    String definition,
+    String exampleStart,
+    String exampleHighlight,
+    String exampleEnd,
+    String synonyms,
+    String imageUrl,
+  ) {
     return GestureDetector(
       onTap: () {
-        // Just for demo, we link to the same WordDetailScreen which currently shows "Negotiate"
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const WordDetailScreen()),
+          MaterialPageRoute(builder: (context) => WordDetailScreen(
+            word: word,
+            type: type,
+            pronunciation: pronunciation,
+            definition: definition,
+            exampleStart: exampleStart,
+            exampleHighlight: exampleHighlight,
+            exampleEnd: exampleEnd,
+            synonyms: synonyms,
+            imageUrl: imageUrl,
+          )),
         );
       },
       child: Container(

@@ -1,7 +1,28 @@
 import 'package:flutter/material.dart';
 
 class WordDetailScreen extends StatelessWidget {
-  const WordDetailScreen({super.key});
+  final String word;
+  final String type;
+  final String pronunciation;
+  final String definition;
+  final String exampleStart;
+  final String exampleHighlight;
+  final String exampleEnd;
+  final String synonyms;
+  final String imageUrl;
+
+  const WordDetailScreen({
+    super.key,
+    required this.word,
+    required this.type,
+    required this.pronunciation,
+    required this.definition,
+    this.exampleStart = '',
+    required this.exampleHighlight,
+    this.exampleEnd = '',
+    required this.synonyms,
+    required this.imageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +65,11 @@ class WordDetailScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Negotiate',
-                  style: TextStyle(
-                    fontSize: 48, // Made larger to match the image accurately
+                Text(
+                  word,
+                  style: const TextStyle(
+                    fontSize: 40, // Slightly reduced to fit larger words
+
                     fontWeight: FontWeight.w500,
                     color: Color(0xFF0A225F), 
                     letterSpacing: -1,
@@ -74,19 +96,21 @@ class WordDetailScreen extends StatelessWidget {
                     color: const Color(0xFFFFDDE4), // Pink color matching the image
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Text(
-                    'Verb',
-                    style: TextStyle(
+                  child: Text(
+                    type,
+                    style: const TextStyle(
                       color: Color(0xFF8B4B59),
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
                     ),
+
                   ),
                 ),
                 const SizedBox(width: 14),
-                const Text(
-                  '/nəˈɡōSHēˌāt/', // Updated pronunciation to match exactly
-                  style: TextStyle(
+                Text(
+                  pronunciation,
+                  style: const TextStyle(
+
                     fontSize: 18,
                     color: Color(0xFF6B7280),
                     fontStyle: FontStyle.italic,
@@ -117,9 +141,9 @@ class WordDetailScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'To discuss something in order to reach an agreement, especially in business or politics.',
-                    style: TextStyle(
+                  Text(
+                    definition,
+                    style: const TextStyle(
                       fontSize: 17,
                       color: Color(0xFF111827),
                       height: 1.5,
@@ -163,20 +187,20 @@ class WordDetailScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 16),
-                        const Expanded(
+                        Expanded(
                           child: Text.rich(
                             TextSpan(
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 17,
                                 color: Color(0xFF4B5563),
                                 height: 1.5,
                                 fontStyle: FontStyle.italic,
                               ),
                               children: [
-                                TextSpan(text: '"The two companies are still '),
+                                TextSpan(text: exampleStart),
                                 TextSpan(
-                                  text: 'negotiating',
-                                  style: TextStyle(
+                                  text: exampleHighlight,
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w900,
                                     color: Color(0xFF03143F),
                                     decoration: TextDecoration.underline,
@@ -184,7 +208,7 @@ class WordDetailScreen extends StatelessWidget {
                                     decorationThickness: 4, 
                                   ),
                                 ),
-                                TextSpan(text: ' the final terms of the merger, aiming for a resolution by Friday."'),
+                                TextSpan(text: exampleEnd),
                               ],
                             ),
                           ),
@@ -223,8 +247,8 @@ class WordDetailScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'Mediate,\nParley,\nArbitrate',
-                          style: TextStyle(
+                          synonyms,
+                          style: const TextStyle(
                             color: Color(0xFF6B3324), 
                             fontSize: 15, 
                             height: 1.5
@@ -241,8 +265,8 @@ class WordDetailScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: const Color(0xFF1B2C4F),
                       borderRadius: BorderRadius.circular(16),
-                      image: const DecorationImage(
-                        image: NetworkImage('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'),
+                      image: DecorationImage(
+                        image: NetworkImage(imageUrl),
                         fit: BoxFit.cover,
                       ),
                     ),

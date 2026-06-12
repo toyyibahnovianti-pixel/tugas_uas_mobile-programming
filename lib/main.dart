@@ -358,7 +358,17 @@ class HomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const WordDetailScreen()),
+                            MaterialPageRoute(builder: (context) => const WordDetailScreen(
+                              word: 'Ephemeral',
+                              type: 'Adjective',
+                              pronunciation: '/əˈfem(ə)rəl/',
+                              definition: 'Lasting for a very short time; transient or fleeting.',
+                              exampleStart: '"The beauty of the cherry blossoms is ',
+                              exampleHighlight: 'ephemeral',
+                              exampleEnd: ', lasting only a few weeks each spring."',
+                              synonyms: 'Transient,\nFleeting,\nShort-lived',
+                              imageUrl: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                            )),
                           );
                         },
                         style: ElevatedButton.styleFrom(
