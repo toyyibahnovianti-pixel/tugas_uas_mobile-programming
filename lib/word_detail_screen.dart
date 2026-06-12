@@ -299,8 +299,9 @@ class WordDetailScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
+          ),
             const SizedBox(height: 24),
             
             // Add to Bookmark Button
