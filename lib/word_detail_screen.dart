@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'bookmark_manager.dart';
+import 'word_data.dart';
 
 class WordDetailScreen extends StatelessWidget {
   final String word;
@@ -302,32 +304,50 @@ class WordDetailScreen extends StatelessWidget {
             const SizedBox(height: 24),
             
             // Add to Bookmark Button
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Word saved to bookmarks!')),
-                  );
-                },
-                icon: const Icon(Icons.bookmark_border, color: Colors.white),
-                label: const Text(
-                  'Add to Bookmark',
-                  style: TextStyle(
-                    color: Colors.white, 
-                    fontSize: 16, 
-                    fontWeight: FontWeight.bold
+            AnimatedBuilder(
+              animation: BookmarkManager.instance,
+              builder: (context, child) {
+                final isSaved = BookmarkManager.instance.isBookmarked(word);
+                return SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      final wordData = WordData(
+                        word: word,
+                        type: type,
+                        pronunciation: pronunciation,
+                        definition: definition,
+                        exampleStart: exampleStart,
+                        exampleHighlight: exampleHighlight,
+                        exampleEnd: exampleEnd,
+                        synonyms: synonyms,
+                        imageUrl: imageUrl,
+                      );
+                      BookmarkManager.instance.toggleBookmark(wordData);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(isSaved ? 'Word removed from bookmarks!' : 'Word saved to bookmarks!')),
+                      );
+                    },
+                    icon: Icon(isSaved ? Icons.bookmark : Icons.bookmark_border, color: Colors.white),
+                    label: Text(
+                      isSaved ? 'Remove from Bookmark' : 'Add to Bookmark',
+                      style: const TextStyle(
+                        color: Colors.white, 
+                        fontSize: 16, 
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF03143F), 
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF03143F), 
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 0,
-                ),
-              ),
+                );
+              },
             ),
             const SizedBox(height: 24),
             

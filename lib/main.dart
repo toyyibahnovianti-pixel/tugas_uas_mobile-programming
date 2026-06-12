@@ -3,6 +3,7 @@ import 'word_detail_screen.dart';
 import 'bookmarks_screen.dart';
 import 'search_screen.dart';
 import 'word_data.dart';
+import 'bookmark_manager.dart';
 
 void main() {
   runApp(const MyApp());
@@ -387,11 +388,18 @@ class HomeScreen extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.bookmark_border, color: Color(0xFF0A225F)),
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Word saved to bookmarks!')),
+                      AnimatedBuilder(
+                        animation: BookmarkManager.instance,
+                        builder: (context, child) {
+                          final isSaved = BookmarkManager.instance.isBookmarked(wordOfTheDay.word);
+                          return IconButton(
+                            icon: Icon(isSaved ? Icons.bookmark : Icons.bookmark_border, color: const Color(0xFF0A225F)),
+                            onPressed: () {
+                              BookmarkManager.instance.toggleBookmark(wordOfTheDay);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(isSaved ? 'Word removed from bookmarks!' : 'Word saved to bookmarks!')),
+                              );
+                            },
                           );
                         },
                       ),

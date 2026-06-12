@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'bookmark_manager.dart';
+import 'word_data.dart';
 
 class BookmarksScreen extends StatelessWidget {
   const BookmarksScreen({super.key});
@@ -57,13 +59,19 @@ class BookmarksScreen extends StatelessWidget {
                     color: Color(0xFF0A225F),
                   ),
                 ),
-                Text(
-                  '12 items',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
-                    fontWeight: FontWeight.w600,
-                  ),
+                AnimatedBuilder(
+                  animation: BookmarkManager.instance,
+                  builder: (context, child) {
+                    final count = BookmarkManager.instance.bookmarkedWords.length;
+                    return Text(
+                      '$count items',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -116,24 +124,29 @@ class BookmarksScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            // Word List - Sekarang menyertakan context sebagai parameter
-            _buildSavedWordCard(
-              context,
-              word: 'Ephemeral',
-              type: 'Adjective',
-              definition: 'Lasting for a very short time; fleeting or transient.',
-            ),
-            _buildSavedWordCard(
-              context,
-              word: 'Sagacious',
-              type: 'Adjective',
-              definition: 'Having or showing keen mental discernment and good judgment.',
-            ),
-            _buildSavedWordCard(
-              context,
-              word: 'Pernicious',
-              type: 'Adjective',
-              definition: 'Having a harmful effect, especially in a gradual or subtle way.',
+            AnimatedBuilder(
+              animation: BookmarkManager.instance,
+              builder: (context, child) {
+                final bookmarks = BookmarkManager.instance.bookmarkedWords;
+                if (bookmarks.isEmpty) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 40.0),
+                    child: Center(
+                      child: Text(
+                        'No words saved yet.',
+                        style: TextStyle(
+                          color: Colors.grey.shade500,
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+                return Column(
+                  children: bookmarks.map((bw) => _buildSavedWordCard(context, word: bw)).toList(),
+                );
+              },
             ),
             const SizedBox(height: 12),
             // Offline Access Card
@@ -171,13 +184,18 @@ class BookmarksScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          'All 12 words are saved to your device for studying without internet connection.',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.7),
-                            fontSize: 12,
-                            height: 1.4,
-                          ),
+                        AnimatedBuilder(
+                          animation: BookmarkManager.instance,
+                          builder: (context, child) {
+                            return Text(
+                              'All ${BookmarkManager.instance.bookmarkedWords.length} words are saved to your device for studying without internet connection.',
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.7),
+                                fontSize: 12,
+                                height: 1.4,
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -195,9 +213,7 @@ class BookmarksScreen extends StatelessWidget {
   // Ditambahkan BuildContext context pada parameter fungsi ini
   Widget _buildSavedWordCard(
     BuildContext context, {
-    required String word,
-    required String type,
-    required String definition,
+    required WordData word,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -222,7 +238,7 @@ class BookmarksScreen extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    word,
+                    word.word,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -237,7 +253,7 @@ class BookmarksScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      type,
+                      word.type,
                       style: const TextStyle(
                         color: Color(0xFF8B4B59),
                         fontSize: 12,
@@ -249,8 +265,9 @@ class BookmarksScreen extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
+                  BookmarkManager.instance.removeBookmarkByWord(word.word);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Word removed from bookmarks!')),
+                    SnackBar(content: Text('${word.word} removed from bookmarks!')),
                   );
                 },
                 icon: const Icon(Icons.delete_outline, color: Colors.grey),
@@ -261,7 +278,7 @@ class BookmarksScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            definition,
+            word.definition,
             style: const TextStyle(
               fontSize: 16,
               color: Color(0xFF4B5563),
