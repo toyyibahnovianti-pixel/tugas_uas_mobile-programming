@@ -234,7 +234,7 @@ class WordDetailScreen extends StatelessWidget {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Icon(Icons.handshake_outlined, size: 32, color: Color(0xFF4A1E14)),
                         SizedBox(height: 16),
                         Text(
