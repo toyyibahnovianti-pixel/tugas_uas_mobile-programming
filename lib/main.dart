@@ -630,7 +630,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-enum _OptionState { unselected, correct, incorrect }
+enum _OptionState { unselected, correct, incorrect, selected }
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -641,9 +641,15 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen> {
   int _currentQuestionIndex = 0;
-  int? _selectedOptionIndex;
-  bool _isAnswerChecked = false;
+  List<int?> _userAnswers = [];
+  bool _showResults = false;
   int _score = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _userAnswers = List.filled(_questions.length, null);
+  }
   
   final List<Map<String, dynamic>> _questions = [
     {
@@ -733,13 +739,8 @@ class _QuizScreenState extends State<QuizScreen> {
   ];
 
   void _checkAnswer(int index) {
-    if (_isAnswerChecked) return;
     setState(() {
-      _selectedOptionIndex = index;
-      _isAnswerChecked = true;
-      if (index == _questions[_currentQuestionIndex]['correctIndex']) {
-        _score++;
-      }
+      _userAnswers[_currentQuestionIndex] = index;
     });
   }
 
@@ -747,62 +748,40 @@ class _QuizScreenState extends State<QuizScreen> {
     if (_currentQuestionIndex < _questions.length - 1) {
       setState(() {
         _currentQuestionIndex++;
-        _selectedOptionIndex = null;
-        _isAnswerChecked = false;
       });
     } else {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: const Text(
-            'Quiz Completed!', 
-            textAlign: TextAlign.center, 
-            style: TextStyle(color: Color(0xFF0A225F), fontWeight: FontWeight.bold)
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.emoji_events, color: Colors.amber, size: 60),
-              const SizedBox(height: 16),
-              Text(
-                'Your Score: $_score / ${_questions.length}', 
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)
-              ),
-              const SizedBox(height: 8),
-              Text(
-                _score == _questions.length ? 'Perfect score! Outstanding!' : 'Great effort! Keep practicing!', 
-                style: const TextStyle(color: Colors.grey)
-              ),
-            ],
-          ),
-          actionsAlignment: MainAxisAlignment.center,
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                setState(() {
-                  _currentQuestionIndex = 0;
-                  _selectedOptionIndex = null;
-                  _isAnswerChecked = false;
-                  _score = 0;
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0A225F),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-              ),
-              child: const Text('Restart Quiz', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            ),
-          ]
-        )
-      );
+      _calculateResults();
     }
+  }
+
+  void _calculateResults() {
+    int score = 0;
+    for (int i = 0; i < _questions.length; i++) {
+      if (_userAnswers[i] == _questions[i]['correctIndex']) {
+        score++;
+      }
+    }
+    setState(() {
+      _score = score;
+      _showResults = true;
+    });
+  }
+
+  void _restartQuiz() {
+    setState(() {
+      _currentQuestionIndex = 0;
+      _userAnswers = List.filled(_questions.length, null);
+      _showResults = false;
+      _score = 0;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_showResults) {
+      return _buildResultsView();
+    }
+
     final question = _questions[_currentQuestionIndex];
     final progress = (_currentQuestionIndex + 1) / _questions.length;
     final letters = ['A', 'B', 'C', 'D'];
@@ -1001,15 +980,10 @@ class _QuizScreenState extends State<QuizScreen> {
               (question['options'] as List<String>).length,
               (index) {
                 final text = (question['options'] as List<String>)[index];
-                final isCorrect = index == question['correctIndex'];
                 
                 _OptionState state = _OptionState.unselected;
-                if (_isAnswerChecked) {
-                  if (index == _selectedOptionIndex) {
-                    state = isCorrect ? _OptionState.correct : _OptionState.incorrect;
-                  } else if (isCorrect) {
-                     state = _OptionState.correct;
-                  }
+                if (_userAnswers[_currentQuestionIndex] == index) {
+                  state = _OptionState.selected;
                 }
 
                 return GestureDetector(
@@ -1028,7 +1002,7 @@ class _QuizScreenState extends State<QuizScreen> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _isAnswerChecked ? _nextQuestion : null,
+                onPressed: _userAnswers[_currentQuestionIndex] != null ? _nextQuestion : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0A225F),
                   foregroundColor: Colors.white,
@@ -1039,18 +1013,18 @@ class _QuizScreenState extends State<QuizScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Continue to Next Question',
-                      style: TextStyle(
+                      _currentQuestionIndex == _questions.length - 1 ? 'Submit Quiz' : 'Continue to Next Question',
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(width: 8),
-                    Icon(Icons.arrow_forward, size: 20),
+                    const SizedBox(width: 8),
+                    const Icon(Icons.arrow_forward, size: 20),
                   ],
                 ),
               ),
@@ -1058,9 +1032,17 @@ class _QuizScreenState extends State<QuizScreen> {
             const SizedBox(height: 16),
 
             // Skip Button
-            if (!_isAnswerChecked)
+            if (_userAnswers[_currentQuestionIndex] == null)
               TextButton(
-                onPressed: _nextQuestion,
+                onPressed: () {
+                  if (_currentQuestionIndex < _questions.length - 1) {
+                    setState(() {
+                      _currentQuestionIndex++;
+                    });
+                  } else {
+                    _calculateResults();
+                  }
+                },
                 child: const Text(
                   'Skip Question',
                   style: TextStyle(
@@ -1159,6 +1141,32 @@ class _QuizScreenState extends State<QuizScreen> {
           fontWeight: FontWeight.bold,
         );
         break;
+      case _OptionState.selected:
+        borderColor = const Color(0xFF0A225F);
+        bgColor = const Color(0xFFF0F4FA);
+        leadingIcon = Container(
+          width: 24,
+          height: 24,
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color(0xFF0A225F),
+          ),
+          child: Text(
+            letter,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        );
+        textStyle = const TextStyle(
+          color: Color(0xFF0A225F),
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        );
+        break;
     }
 
     return Container(
@@ -1181,6 +1189,104 @@ class _QuizScreenState extends State<QuizScreen> {
             child: Text(
               text,
               style: textStyle,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildResultsView() {
+    return Scaffold(
+      backgroundColor: const Color(0xFFF9FAFB),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text(
+          'Quiz Results',
+          style: TextStyle(
+            color: Color(0xFF0A225F),
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(24),
+            margin: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 4)),
+              ],
+            ),
+            child: Column(
+              children: [
+                const Icon(Icons.emoji_events, color: Colors.amber, size: 60),
+                const SizedBox(height: 16),
+                Text(
+                  'Your final score is',
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 16),
+                ),
+                Text(
+                  '$_score / ${_questions.length}',
+                  style: const TextStyle(color: Color(0xFF0A225F), fontSize: 32, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: _questions.length,
+              itemBuilder: (context, index) {
+                final q = _questions[index];
+                final isSkipped = _userAnswers[index] == null;
+                final isCorrect = _userAnswers[index] == q['correctIndex'];
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: isCorrect ? const Color(0xFFF0FDF4) : const Color(0xFFFEF2F2),
+                    border: Border.all(color: isCorrect ? const Color(0xFF86EFAC) : const Color(0xFFFCA5A5)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Question ${index + 1}: ${q['word']}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF0A225F))),
+                      const SizedBox(height: 8),
+                      Text('Your Answer: ${isSkipped ? 'Skipped' : q['options'][_userAnswers[index]!]}', 
+                        style: TextStyle(color: isCorrect ? Colors.green.shade700 : Colors.red.shade700)),
+                      if (!isCorrect)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text('Correct Answer: ${q['options'][q['correctIndex']]}', 
+                            style: TextStyle(color: Colors.green.shade700, fontWeight: FontWeight.w600)),
+                        ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: ElevatedButton(
+                onPressed: _restartQuiz,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF0A225F),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                child: const Text('Retake Quiz', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+              ),
             ),
           ),
         ],
