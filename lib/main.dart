@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'word_detail_screen.dart';
 import 'bookmarks_screen.dart';
 import 'search_screen.dart';
+import 'word_data.dart';
 
 void main() {
   runApp(const MyApp());
@@ -246,6 +247,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wordOfTheDay = WordData.getWordOfTheDay();
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB), // Very light gray from the design background
       appBar: AppBar(
@@ -324,27 +326,27 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Ephemeral',
-                    style: TextStyle(
+                  Text(
+                    wordOfTheDay.word,
+                    style: const TextStyle(
                       color: Color(0xFF0A225F),
                       fontSize: 32,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    '/əˈfem(ə)rəl/',
-                    style: TextStyle(
+                  Text(
+                    wordOfTheDay.pronunciation,
+                    style: const TextStyle(
                       color: Color(0xFF4A5568),
                       fontSize: 16,
                       fontStyle: FontStyle.italic,
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Lasting for a very short time; transient\nor fleeting.',
-                    style: TextStyle(
+                  Text(
+                    wordOfTheDay.definition,
+                    style: const TextStyle(
                       color: Color(0xFF0A225F),
                       fontSize: 15,
                       height: 1.4,
@@ -358,16 +360,16 @@ class HomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const WordDetailScreen(
-                              word: 'Ephemeral',
-                              type: 'Adjective',
-                              pronunciation: '/əˈfem(ə)rəl/',
-                              definition: 'Lasting for a very short time; transient or fleeting.',
-                              exampleStart: '"The beauty of the cherry blossoms is ',
-                              exampleHighlight: 'ephemeral',
-                              exampleEnd: ', lasting only a few weeks each spring."',
-                              synonyms: 'Transient,\nFleeting,\nShort-lived',
-                              imageUrl: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+                            MaterialPageRoute(builder: (context) => WordDetailScreen(
+                              word: wordOfTheDay.word,
+                              type: wordOfTheDay.type,
+                              pronunciation: wordOfTheDay.pronunciation,
+                              definition: wordOfTheDay.definition,
+                              exampleStart: wordOfTheDay.exampleStart,
+                              exampleHighlight: wordOfTheDay.exampleHighlight,
+                              exampleEnd: wordOfTheDay.exampleEnd,
+                              synonyms: wordOfTheDay.synonyms,
+                              imageUrl: wordOfTheDay.imageUrl,
                             )),
                           );
                         },
