@@ -11,6 +11,23 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() {
+      setState(() {
+        _searchQuery = _searchController.text.toLowerCase();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +139,10 @@ class _SearchScreenState extends State<SearchScreen> {
               child: ListView(
                 physics: const BouncingScrollPhysics(),
                 children: [
-                  ...WordData.allWords.map((wordData) => _buildSearchResultCard(
+                  ...WordData.allWords.where((wordData) {
+                    return wordData.word.toLowerCase().contains(_searchQuery) ||
+                           wordData.definition.toLowerCase().contains(_searchQuery);
+                  }).map((wordData) => _buildSearchResultCard(
                     context, 
                     wordData.word, 
                     wordData.type, 
