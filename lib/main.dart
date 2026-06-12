@@ -643,6 +643,7 @@ class _QuizScreenState extends State<QuizScreen> {
   int _currentQuestionIndex = 0;
   int? _selectedOptionIndex;
   bool _isAnswerChecked = false;
+  int _score = 0;
   
   final List<Map<String, dynamic>> _questions = [
     {
@@ -687,6 +688,48 @@ class _QuizScreenState extends State<QuizScreen> {
       ],
       'correctIndex': 2,
     },
+    {
+      'word': 'RESILIENCE',
+      'type': 'Noun',
+      'category': 'General',
+      'questionText': 'What is the closest meaning of\n',
+      'subtitle': 'Choose the correct definition.',
+      'options': [
+        'A strong feeling of passion.',
+        'The ability to recover quickly from difficulties.',
+        'A process of breaking down complex problems.',
+        'Resistance to taking orders from authority.',
+      ],
+      'correctIndex': 1,
+    },
+    {
+      'word': 'MITIGATE',
+      'type': 'Verb',
+      'category': 'Medical / General',
+      'questionText': 'To do what is to\n',
+      'subtitle': 'Pick the best fitting description.',
+      'options': [
+        'Make something more complicated.',
+        'Expose a secret to the public.',
+        'Make less severe, serious, or painful.',
+        'Investigate thoroughly and find the root cause.',
+      ],
+      'correctIndex': 2,
+    },
+    {
+      'word': 'UBIQUITOUS',
+      'type': 'Adjective',
+      'category': 'General',
+      'questionText': 'Something that is\n',
+      'subtitle': 'Which characterization is correct?',
+      'options': [
+        'Found everywhere or omnipresent.',
+        'Extremely rare and valuable.',
+        'Harmful to the surrounding environment.',
+        'Difficult to understand or confusing.',
+      ],
+      'correctIndex': 0,
+    },
   ];
 
   void _checkAnswer(int index) {
@@ -694,6 +737,9 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(() {
       _selectedOptionIndex = index;
       _isAnswerChecked = true;
+      if (index == _questions[_currentQuestionIndex]['correctIndex']) {
+        _score++;
+      }
     });
   }
 
@@ -705,14 +751,53 @@ class _QuizScreenState extends State<QuizScreen> {
         _isAnswerChecked = false;
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Quiz Completed! Great job!')),
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: const Text(
+            'Quiz Completed!', 
+            textAlign: TextAlign.center, 
+            style: TextStyle(color: Color(0xFF0A225F), fontWeight: FontWeight.bold)
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.emoji_events, color: Colors.amber, size: 60),
+              const SizedBox(height: 16),
+              Text(
+                'Your Score: $_score / ${_questions.length}', 
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)
+              ),
+              const SizedBox(height: 8),
+              Text(
+                _score == _questions.length ? 'Perfect score! Outstanding!' : 'Great effort! Keep practicing!', 
+                style: const TextStyle(color: Colors.grey)
+              ),
+            ],
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _currentQuestionIndex = 0;
+                  _selectedOptionIndex = null;
+                  _isAnswerChecked = false;
+                  _score = 0;
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF0A225F),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              child: const Text('Restart Quiz', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            ),
+          ]
+        )
       );
-      setState(() {
-        _currentQuestionIndex = 0;
-        _selectedOptionIndex = null;
-        _isAnswerChecked = false;
-      });
     }
   }
 
