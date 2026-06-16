@@ -290,7 +290,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             // Greeting text
             const Text(
-              'Hello, Toyyibah Noviyanti!',
+              'Hello, Hello, Welcome to English Vocabulary!',
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w800,
