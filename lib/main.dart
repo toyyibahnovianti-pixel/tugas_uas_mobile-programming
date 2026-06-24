@@ -68,18 +68,24 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Pink Icon Box
+            // Logo Image
             Container(
               width: 100,
               height: 100,
               decoration: BoxDecoration(
-                color: const Color(0xFFF0CAD4),
                 borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
-              child: const Icon(
-                Icons.menu_book,
-                size: 55,
-                color: Color(0xFF6B4550),
+              clipBehavior: Clip.antiAlias,
+              child: Image.asset(
+                'assets/icon.png',
+                fit: BoxFit.cover,
               ),
             ),
             const SizedBox(height: 32),
@@ -254,14 +260,6 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.black87),
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Menu coming soon!')),
-            );
-          },
-        ),
         title: const Text(
           'WordRise',
           style: TextStyle(
@@ -282,6 +280,89 @@ class HomeScreen extends StatelessWidget {
             },
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Color(0xFF0A225F),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Image.asset('assets/icon.png', fit: BoxFit.cover),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'WordRise',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.privacy_tip_outlined),
+              title: const Text('Privacy Policy'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Privacy Policy'),
+                      content: const SingleChildScrollView(
+                        child: Text(
+                          'Welcome to WordRise.\n\n'
+                          '1. Information Collection\n'
+                          'We do not collect, store, or share any personal information. All your learning progress and bookmarks are stored completely offline on your device.\n\n'
+                          '2. App Permissions\n'
+                          'This application does not require any dangerous permissions, such as camera, location, or microphone. It may use internet access only to fetch external dictionaries if applicable, though the core functionality works offline.\n\n'
+                          '3. Security\n'
+                          'We value your privacy and strive to use commercially acceptable means of protecting it.\n\n'
+                          '4. Changes to This Privacy Policy\n'
+                          'We may update our Privacy Policy from time to time. You are advised to review this page periodically for any changes.\n\n'
+                          'If you have any questions or suggestions, please contact the developer.',
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text('Close'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: const Text('About'),
+              onTap: () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('WordRise v1.0.0')),
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
