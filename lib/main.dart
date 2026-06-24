@@ -58,11 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF03225F),
-              Color(0xFF072D75),
-              Color(0xFF021135),
-            ],
+            colors: [Color(0xFF03225F), Color(0xFF072D75), Color(0xFF021135)],
           ),
         ),
         child: Column(
@@ -83,10 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
               clipBehavior: Clip.antiAlias,
-              child: Image.asset(
-                'assets/icon.png',
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset('assets/icon.png', fit: BoxFit.cover),
             ),
             const SizedBox(height: 32),
             // Title
@@ -189,7 +182,9 @@ class _MainScreenState extends State<MainScreen> {
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
           color: const Color(0xFFF9FAFB),
-          border: Border(top: BorderSide(color: Colors.grey.shade300, width: 1)),
+          border: Border(
+            top: BorderSide(color: Colors.grey.shade300, width: 1),
+          ),
         ),
         child: SafeArea(
           child: Row(
@@ -198,7 +193,7 @@ class _MainScreenState extends State<MainScreen> {
               _buildNavItem(Icons.home_outlined, 'Dashboard', 0),
               _buildNavItem(Icons.search, 'Search', 1),
               _buildNavItem(Icons.bookmark_border, 'Bookmarks', 2),
-              _buildNavItem(Icons.quiz_outlined, 'Quiz', 3), 
+              _buildNavItem(Icons.quiz_outlined, 'Quiz', 3),
             ],
           ),
         ),
@@ -219,12 +214,12 @@ class _MainScreenState extends State<MainScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: isSelected
             ? BoxDecoration(
-                color: const Color(0xFF0A225F), // Dark blue background for selected item
+                color: const Color(
+                  0xFF0A225F,
+                ), // Dark blue background for selected item
                 borderRadius: BorderRadius.circular(24),
               )
-            : const BoxDecoration(
-                color: Colors.transparent,
-              ),
+            : const BoxDecoration(color: Colors.transparent),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -256,7 +251,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final wordOfTheDay = WordData.getWordOfTheDay();
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FAFB), // Very light gray from the design background
+      backgroundColor: const Color(
+        0xFFF9FAFB,
+      ), // Very light gray from the design background
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -272,7 +269,11 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle_outlined, color: Colors.black87, size: 28),
+            icon: const Icon(
+              Icons.account_circle_outlined,
+              color: Colors.black87,
+              size: 28,
+            ),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Profile feature coming soon!')),
@@ -286,9 +287,7 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Color(0xFF0A225F),
-              ),
+              decoration: const BoxDecoration(color: Color(0xFF0A225F)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -371,7 +370,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             // Greeting text
             const Text(
-              'Hello, Hello, Welcome to English Vocabulary!',
+              'Hello, Welcome to English Vocabulary!',
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w800,
@@ -381,10 +380,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 6),
             const Text(
               'Ready to expand your lexicon today?',
-              style: TextStyle(
-                fontSize: 15,
-                color: Color(0xFF4B5563),
-              ),
+              style: TextStyle(fontSize: 15, color: Color(0xFF4B5563)),
             ),
             const SizedBox(height: 24),
 
@@ -442,23 +438,30 @@ class HomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => WordDetailScreen(
-                              word: wordOfTheDay.word,
-                              type: wordOfTheDay.type,
-                              pronunciation: wordOfTheDay.pronunciation,
-                              definition: wordOfTheDay.definition,
-                              exampleStart: wordOfTheDay.exampleStart,
-                              exampleHighlight: wordOfTheDay.exampleHighlight,
-                              exampleEnd: wordOfTheDay.exampleEnd,
-                              synonyms: wordOfTheDay.synonyms,
-                              imageUrl: wordOfTheDay.imageUrl,
-                            )),
+                            MaterialPageRoute(
+                              builder: (context) => WordDetailScreen(
+                                word: wordOfTheDay.word,
+                                type: wordOfTheDay.type,
+                                pronunciation: wordOfTheDay.pronunciation,
+                                definition: wordOfTheDay.definition,
+                                exampleStart: wordOfTheDay.exampleStart,
+                                exampleHighlight: wordOfTheDay.exampleHighlight,
+                                exampleEnd: wordOfTheDay.exampleEnd,
+                                synonyms: wordOfTheDay.synonyms,
+                                imageUrl: wordOfTheDay.imageUrl,
+                              ),
+                            ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0A225F), // Dark blue matching theme
+                          backgroundColor: const Color(
+                            0xFF0A225F,
+                          ), // Dark blue matching theme
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -472,13 +475,26 @@ class HomeScreen extends StatelessWidget {
                       AnimatedBuilder(
                         animation: BookmarkManager.instance,
                         builder: (context, child) {
-                          final isSaved = BookmarkManager.instance.isBookmarked(wordOfTheDay.word);
+                          final isSaved = BookmarkManager.instance.isBookmarked(
+                            wordOfTheDay.word,
+                          );
                           return IconButton(
-                            icon: Icon(isSaved ? Icons.bookmark : Icons.bookmark_border, color: const Color(0xFF0A225F)),
+                            icon: Icon(
+                              isSaved ? Icons.bookmark : Icons.bookmark_border,
+                              color: const Color(0xFF0A225F),
+                            ),
                             onPressed: () {
-                              BookmarkManager.instance.toggleBookmark(wordOfTheDay);
+                              BookmarkManager.instance.toggleBookmark(
+                                wordOfTheDay,
+                              );
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(isSaved ? 'Word removed from bookmarks!' : 'Word saved to bookmarks!')),
+                                SnackBar(
+                                  content: Text(
+                                    isSaved
+                                        ? 'Word removed from bookmarks!'
+                                        : 'Word saved to bookmarks!',
+                                  ),
+                                ),
                               );
                             },
                           );
@@ -547,9 +563,14 @@ class HomeScreen extends StatelessWidget {
                         width: 12,
                         height: 12,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFDDE4), // Pink color matching theme
+                          color: const Color(
+                            0xFFFFDDE4,
+                          ), // Pink color matching theme
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2), // Small white outline
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 2,
+                          ), // Small white outline
                         ),
                       ),
                     ),
@@ -559,7 +580,7 @@ class HomeScreen extends StatelessWidget {
             ),
 
             const SizedBox(height: 32),
-            
+
             // Learning Categories header
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -576,7 +597,9 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SearchScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const SearchScreen(),
+                      ),
                     );
                   },
                   child: const Text(
@@ -584,13 +607,13 @@ class HomeScreen extends StatelessWidget {
                     style: TextStyle(
                       color: Color(0xFF6B7AC4), // Text button color
                       fontWeight: FontWeight.w600,
-                    ), 
+                    ),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            
+
             // Learning Categories Grid
             GridView.count(
               shrinkWrap: true,
@@ -600,10 +623,22 @@ class HomeScreen extends StatelessWidget {
               crossAxisSpacing: 16,
               childAspectRatio: 1.05,
               children: [
-                _buildCategoryCard('Business', '1,240 words', Icons.business_center_outlined),
+                _buildCategoryCard(
+                  'Business',
+                  '1,240 words',
+                  Icons.business_center_outlined,
+                ),
                 _buildCategoryCard('Travel', '850 words', Icons.flight),
-                _buildCategoryCard('Academic', '2,100 words', Icons.school_outlined),
-                _buildCategoryCard('Daily Life', '3,420 words', Icons.home_outlined),
+                _buildCategoryCard(
+                  'Academic',
+                  '2,100 words',
+                  Icons.school_outlined,
+                ),
+                _buildCategoryCard(
+                  'Daily Life',
+                  '3,420 words',
+                  Icons.home_outlined,
+                ),
               ],
             ),
             const SizedBox(height: 24),
@@ -700,10 +735,7 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             subtitle,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey.shade600,
-            ),
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
           ),
         ],
       ),
@@ -731,14 +763,15 @@ class _QuizScreenState extends State<QuizScreen> {
     super.initState();
     _userAnswers = List.filled(_questions.length, null);
   }
-  
+
   final List<Map<String, dynamic>> _questions = [
     {
       'word': 'REVENUE',
       'type': 'Noun',
       'category': 'Economics',
       'questionText': 'What is the meaning of\n',
-      'subtitle': 'Choose the most accurate definition used in a business context.',
+      'subtitle':
+          'Choose the most accurate definition used in a business context.',
       'options': [
         'The total amount of money received from sales.',
         'The net profit after all expenses are paid.',
@@ -875,9 +908,9 @@ class _QuizScreenState extends State<QuizScreen> {
         leading: IconButton(
           icon: const Icon(Icons.menu, color: Colors.black87),
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Menu coming soon!')),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('Menu coming soon!')));
           },
         ),
         title: const Text(
@@ -892,7 +925,11 @@ class _QuizScreenState extends State<QuizScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle_outlined, color: Colors.black87, size: 28),
+            icon: const Icon(
+              Icons.account_circle_outlined,
+              color: Colors.black87,
+              size: 28,
+            ),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Profile feature coming soon!')),
@@ -953,7 +990,9 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                     AnimatedPositioned(
                       duration: const Duration(milliseconds: 300),
-                      left: (width * progress) - 6 < 0 ? 0 : (width * progress) - 6,
+                      left: (width * progress) - 6 < 0
+                          ? 0
+                          : (width * progress) - 6,
                       child: Container(
                         width: 12,
                         height: 12,
@@ -969,7 +1008,7 @@ class _QuizScreenState extends State<QuizScreen> {
               },
             ),
             const SizedBox(height: 32),
-            
+
             // Question Card
             Container(
               width: double.infinity,
@@ -992,7 +1031,10 @@ class _QuizScreenState extends State<QuizScreen> {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFFE4E8),
                           borderRadius: BorderRadius.circular(12),
@@ -1008,7 +1050,10 @@ class _QuizScreenState extends State<QuizScreen> {
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(12),
@@ -1057,33 +1102,34 @@ class _QuizScreenState extends State<QuizScreen> {
             const SizedBox(height: 24),
 
             // Options
-            ...List.generate(
-              (question['options'] as List<String>).length,
-              (index) {
-                final text = (question['options'] as List<String>)[index];
-                
-                _OptionState state = _OptionState.unselected;
-                if (_userAnswers[_currentQuestionIndex] == index) {
-                  state = _OptionState.selected;
-                }
+            ...List.generate((question['options'] as List<String>).length, (
+              index,
+            ) {
+              final text = (question['options'] as List<String>)[index];
 
-                return GestureDetector(
-                  onTap: () => _checkAnswer(index),
-                  child: _buildOption(
-                    letter: letters[index],
-                    text: text,
-                    state: state,
-                  ),
-                );
-              },
-            ),
+              _OptionState state = _OptionState.unselected;
+              if (_userAnswers[_currentQuestionIndex] == index) {
+                state = _OptionState.selected;
+              }
+
+              return GestureDetector(
+                onTap: () => _checkAnswer(index),
+                child: _buildOption(
+                  letter: letters[index],
+                  text: text,
+                  state: state,
+                ),
+              );
+            }),
             const SizedBox(height: 24),
 
             // Continue Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _userAnswers[_currentQuestionIndex] != null ? _nextQuestion : null,
+                onPressed: _userAnswers[_currentQuestionIndex] != null
+                    ? _nextQuestion
+                    : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0A225F),
                   foregroundColor: Colors.white,
@@ -1098,7 +1144,9 @@ class _QuizScreenState extends State<QuizScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      _currentQuestionIndex == _questions.length - 1 ? 'Submit Quiz' : 'Continue to Next Question',
+                      _currentQuestionIndex == _questions.length - 1
+                          ? 'Submit Quiz'
+                          : 'Continue to Next Question',
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -1171,10 +1219,7 @@ class _QuizScreenState extends State<QuizScreen> {
             ),
           ),
         );
-        textStyle = const TextStyle(
-          color: Color(0xFF374151),
-          fontSize: 14,
-        );
+        textStyle = const TextStyle(color: Color(0xFF374151), fontSize: 14);
         break;
       case _OptionState.incorrect:
         borderColor = const Color(0xFFFCA5A5);
@@ -1187,11 +1232,7 @@ class _QuizScreenState extends State<QuizScreen> {
             shape: BoxShape.circle,
             border: Border.all(color: const Color(0xFFDC2626), width: 1.5),
           ),
-          child: const Icon(
-            Icons.close,
-            size: 16,
-            color: Color(0xFFDC2626),
-          ),
+          child: const Icon(Icons.close, size: 16, color: Color(0xFFDC2626)),
         );
         textStyle = const TextStyle(
           color: Color(0xFFDC2626),
@@ -1210,11 +1251,7 @@ class _QuizScreenState extends State<QuizScreen> {
             shape: BoxShape.circle,
             color: Color(0xFF0A225F),
           ),
-          child: const Icon(
-            Icons.check,
-            size: 16,
-            color: Colors.white,
-          ),
+          child: const Icon(Icons.check, size: 16, color: Colors.white),
         );
         textStyle = const TextStyle(
           color: Color(0xFF0A225F),
@@ -1266,12 +1303,7 @@ class _QuizScreenState extends State<QuizScreen> {
         children: [
           leadingIcon,
           const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              text,
-              style: textStyle,
-            ),
-          ),
+          Expanded(child: Text(text, style: textStyle)),
         ],
       ),
     );
@@ -1302,7 +1334,11 @@ class _QuizScreenState extends State<QuizScreen> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 4)),
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.04),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
               ],
             ),
             child: Column(
@@ -1315,7 +1351,11 @@ class _QuizScreenState extends State<QuizScreen> {
                 ),
                 Text(
                   '$_score / ${_questions.length}',
-                  style: const TextStyle(color: Color(0xFF0A225F), fontSize: 32, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Color(0xFF0A225F),
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -1332,22 +1372,46 @@ class _QuizScreenState extends State<QuizScreen> {
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: isCorrect ? const Color(0xFFF0FDF4) : const Color(0xFFFEF2F2),
-                    border: Border.all(color: isCorrect ? const Color(0xFF86EFAC) : const Color(0xFFFCA5A5)),
+                    color: isCorrect
+                        ? const Color(0xFFF0FDF4)
+                        : const Color(0xFFFEF2F2),
+                    border: Border.all(
+                      color: isCorrect
+                          ? const Color(0xFF86EFAC)
+                          : const Color(0xFFFCA5A5),
+                    ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Question ${index + 1}: ${q['word']}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF0A225F))),
+                      Text(
+                        'Question ${index + 1}: ${q['word']}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Color(0xFF0A225F),
+                        ),
+                      ),
                       const SizedBox(height: 8),
-                      Text('Your Answer: ${isSkipped ? 'Skipped' : q['options'][_userAnswers[index]!]}', 
-                        style: TextStyle(color: isCorrect ? Colors.green.shade700 : Colors.red.shade700)),
+                      Text(
+                        'Your Answer: ${isSkipped ? 'Skipped' : q['options'][_userAnswers[index]!]}',
+                        style: TextStyle(
+                          color: isCorrect
+                              ? Colors.green.shade700
+                              : Colors.red.shade700,
+                        ),
+                      ),
                       if (!isCorrect)
                         Padding(
                           padding: const EdgeInsets.only(top: 4.0),
-                          child: Text('Correct Answer: ${q['options'][q['correctIndex']]}', 
-                            style: TextStyle(color: Colors.green.shade700, fontWeight: FontWeight.w600)),
+                          child: Text(
+                            'Correct Answer: ${q['options'][q['correctIndex']]}',
+                            style: TextStyle(
+                              color: Colors.green.shade700,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                     ],
                   ),
@@ -1364,9 +1428,18 @@ class _QuizScreenState extends State<QuizScreen> {
                 onPressed: _restartQuiz,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF0A225F),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                child: const Text('Retake Quiz', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                child: const Text(
+                  'Retake Quiz',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),
